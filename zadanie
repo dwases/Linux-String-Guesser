@@ -1,0 +1,103 @@
+#!/bin/bash
+x="~\`q wertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890!@#$%^&*)(\"':;][}{|\\+=_-/?>.<,"
+#echo $znaki
+#konwersja stringa znaki na tablice
+i=0
+while [ $i -lt ${#x} ]; do y[$i]=${x:$i:1}; i=$((i+1)); done
+#echo "${y[7]}"
+#y to od teraz tablica znakow ze stringa x
+case "$1" in
+
+  -h)
+    echo "Komenda zadanie - pomoc."
+    echo "Skladnia: ./zadanie przelacznik argument(nie podawac dla opcji -h)"
+    echo "Przelaczniki:"
+    echo "-h - wyswietla pomoc, -l - strategia losowa, -p strategia przyrostowa"
+    echo "argument winien byc zawarty w cudzyslow jesli zawiera on spacje"
+    ;;
+  -p)
+    string_podany=$2
+    len_podany=${#string_podany}
+    echo "$len_podany"
+    i=0
+    while [ $i -lt ${#string_podany} ]; do v[$i]=${string_podany:$i:1}; i=$((i+1)); done
+    for (( i = 0; i < $len_podany; i++ ))
+    do
+      z=$((0 + RANDOM % 95))
+      string_nowy[$i]="$((0 + $RANDOM % 95))"
+      string_nowy[$i]="${y[$z]}"
+      echo -n "${string_nowy[$i]}"
+    done
+    echo " "
+    echo "PROCES LOSOWANIA"
+    for (( i = 0; i < $len_podany; i++))
+    do
+      while [[ ${string_nowy[$i]} != ${v[$i]} ]]
+      do
+        z=$((0 + RANDOM % 95))
+        string_nowy[$i]="${y[$z]}"     
+        for (( m = 0; m < $len_podany; m++))
+        do
+           echo -n "${string_nowy[$m]}"
+        done
+        echo " "
+      done
+    done
+    echo "Wynik poprawny:"
+    for (( i = 0; i < $len_podany; i++ ))
+    do
+      echo -n "${string_nowy[$i]}"
+    done
+    ;;
+  -l)
+    string_podany=$2
+    len_podany=${#string_podany}
+    echo "$len_podany"
+    i=0
+    while [ $i -lt ${#string_podany} ]; do v[$i]=${string_podany:$i:1}; i=$((i+1)); done
+    for (( i = 0; i < $len_podany; i++ ))
+    do
+      z=$((0 + RANDOM % 95))
+      string_nowy[$i]="$((0 + $RANDOM % 95))"
+      string_nowy[$i]="${y[$z]}"
+      echo -n "${string_nowy[$i]}"
+    done
+    echo " "
+    echo "PROCES LOSOWANIA"
+    flag = 0
+    #teraz potrzebuje stringow string_nowy i ten stary
+    while (( flag == 0 ))
+      do
+        for (( i = 0; i < $len_podany; i++))
+        do
+          z=$((0 + RANDOM % 95))
+          string_nowy[$i]="${y[$z]}"
+        done
+        for (( m = 0; m < $len_podany; m++))
+        do
+           echo -n "${string_nowy[$m]}"
+        done
+        echo " "
+        flag=1
+        for (( i = 0; i < $len_podany; i++ ))
+        do
+          if [[ ${string_nowy[$i]} != ${v[$i]} ]]
+          then
+            #echo "$string_nowy[$i] $v[$i]"
+            flag=0
+          fi
+        done
+      done
+    echo "Wynik poprawny:"
+    for (( i = 0; i < $len_podany; i++ ))
+    do
+      echo -n "${string_nowy[$i]}"
+    done
+    ;;
+  -*)
+    echo "nieznana flaga"
+    ;;
+  *)
+    break
+esac
+
